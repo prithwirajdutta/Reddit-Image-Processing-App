@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+  </head>
+ 
+  <body>
+  <div class="container" style="padding:50px;">
+    <span>Fetching Images from Reddit !</span>
+          <div class="progress">
+    <div class="progress-bar" style="width:0%" id="pb"></div> 
+    </div>           
+  <br>
+
+    <div class="container" id="rdt"></div>
+
+  </div>
+  </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      
+        setInterval(function(){
+                $('#pb').animate({
+                width:"+=400"
+                },1000);
+          if($('#pb').width() > 1000)
+          {
+              $('#pb').css("background-color","green");
+               fetch(`https://www.reddit.com/r/aww.json`).then(res=>res.json())
+              .then(data=>{
+                  var images;
+                  var rdt = document.getElementById('rdt');
+                  for(var i=0;i<data.data.children.length;i++){
+                  rdt.innerHTML += "<img src='"+data.data.children[i].data.thumbnail+"' width=100 height=100/>";
+                  console.log(data.data.children[i].data.thumbnail);
+                  }
+              }).catch(err=>console.log(err));
+             
+          }
+       },1000);
+    });
+  </script>
+</html>
